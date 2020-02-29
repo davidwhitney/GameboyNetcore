@@ -48,7 +48,7 @@ namespace GameboyNetcore.Core.Test.Unit
         {
             var rom = new Cartridge(TestRom);
 
-            Assert.That(rom.Title, Is.EqualTo(""));
+            Assert.That(rom.TitleText, Is.EqualTo(""));
         }
 
         [Test]
@@ -64,8 +64,15 @@ namespace GameboyNetcore.Core.Test.Unit
         {
             var rom = new Cartridge(TetrisRom);
 
-            Assert.That(rom.Title, Is.EqualTo("TETRIS"));
-            Assert.That(rom.IsSuperGameboy(), Is.False);
+            Assert.That(rom.TitleText, Is.EqualTo("TETRIS"));
+            Assert.That(rom.IsSuperGameboy, Is.False);
+            Assert.That(rom.RomSizeInKb, Is.EqualTo(32));
+            Assert.That(rom.RamSizeInKb, Is.EqualTo(0));
+            Assert.That(rom.IsColorGameboyOnly, Is.False);
+            Assert.That(rom.CartridgeTypeText, Is.EqualTo("ROM ONLY"));
+            Assert.That(rom.DestinationCodeText, Is.EqualTo("Japanese"));
+            Assert.That(rom.LicenseeText, Is.EqualTo("nintendo"));
+            Assert.That(rom.MaskRomVersionNumber, Is.EqualTo(0x00));
         }
 
         [Test]
