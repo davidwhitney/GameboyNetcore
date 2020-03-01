@@ -1,18 +1,15 @@
-﻿using System.IO;
-using Newtonsoft.Json;
-
-namespace GameboyNetcore.Core
+﻿namespace GameboyNetcore.Core
 {
     public class GameBoy
     {
-        public OpcodeCollection OpCodes { get; }
-        
+        public LR25902 CPU { get; set; }
+        public Display Video { get; set; }
         public Cartridge Cartridge { get; set; }
 
         public GameBoy()
         {
-            var fileContents = File.ReadAllText("C:\\dev\\GameboyNetcore\\GameboyNetcore.Core\\opcodes.json");
-            OpCodes = JsonConvert.DeserializeObject<OpcodeCollection>(fileContents);
+            CPU = new LR25902();
+            Video = new Display(160, 144);
             Cartridge = Cartridge.Nothing;
         }
 

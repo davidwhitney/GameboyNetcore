@@ -7,5 +7,7 @@
         public int[] cycles { get; set; }
         public string[] flags { get; set; }
         public string addr { get; set; }
+        public string operand1 { get; set; }
+        public string operand2 { get; set; }
     }
 }
