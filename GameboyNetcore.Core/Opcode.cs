@@ -1,4 +1,6 @@
-﻿namespace GameboyNetcore.Core
+﻿using System;
+
+namespace GameboyNetcore.Core
 {
     public class Opcode
     {
@@ -9,5 +11,7 @@
         public string addr { get; set; }
         public string operand1 { get; set; }
         public string operand2 { get; set; }
+
+        public int addrInt => Convert.ToInt32(addr, 16);
     }
 }
