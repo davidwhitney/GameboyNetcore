@@ -26,6 +26,12 @@
             }
         }
 
+        public byte this[int i]
+        {
+            get => Get(_values[i]);
+            set => Set(i, value);
+        }
+
         public void Set(int location, byte value)
         {
             _values[location] = value;

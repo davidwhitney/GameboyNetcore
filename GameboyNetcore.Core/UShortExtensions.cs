@@ -12,5 +12,11 @@
 
         public static ushort SetLowerBits(this ushort target, byte value) 
             => (ushort)((value << 8) | target.High());
+
+
+        public static ushort Combine(this byte target, byte value)
+        {
+            return (ushort)((value << 8) | (byte)target);
+        }
     }
 }

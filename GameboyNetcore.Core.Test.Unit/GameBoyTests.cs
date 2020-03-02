@@ -1,5 +1,7 @@
 using System;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace GameboyNetcore.Core.Test.Unit
@@ -7,10 +9,15 @@ namespace GameboyNetcore.Core.Test.Unit
     public class GameBoyTests
     {
         private GameBoy _sut;
+        private CancellationToken _cancellationToken;
         private const string TestRom = "C:\\dev\\GameboyNetcore\\GameboyNetcore.Core.Test.Unit\\dmg_test_prog_ver1.gb.bin";
-
+        
         [SetUp]
-        public void Setup() => _sut = new GameBoy();
+        public void Setup()
+        {
+            _sut = new GameBoy();
+            _cancellationToken = new CancellationTokenSource(1000).Token;
+        }
 
         [Test]
         public void Ctor_DefaultsToRomNothing() 
@@ -44,43 +51,40 @@ namespace GameboyNetcore.Core.Test.Unit
         }
 
         [Test]
-        public void Load_PowerOn_SetMemory()
+        public async Task Load_PowerOn_SetMemory()
         {
             _sut.InsertCartridge(TestRom);
-            _sut.PowerOn();
+            await _sut.PowerOn(_cancellationToken, false);
 
-            Assert.That(_sut.Cartridge, Is.Not.EqualTo(Cartridge.Nothing));
-        }
-    }
-
-    [TestFixture]
-    public class LR25902Tests
-    {
-        private LR25902 _cpu;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _cpu = new LR25902(null);
+            Assert.That(_sut.CPU.Registers.AF, Is.EqualTo(0x01B0));
         }
 
         [Test]
-        public void Flags_IsExtractedFromAFRegister()
+        public async Task PowerOn_WithCancellationToken_DoesNotLoopForever()
         {
-            _cpu.AF = 0b0010_0110_0000_0011;
-
-            Assert.That(_cpu.Flags, Is.EqualTo(0b0010_0110));
+            _sut.InsertCartridge(TestRom);
+            await _sut.PowerOn(new CancellationTokenSource(1).Token);
+            
+            Assert.Pass();
         }
 
         [Test]
-        public void Flags_CanBeUpdated()
+        public async Task Stepping_StartsWithANopAndAJp()
         {
-            _cpu.AF = 0b0010_0110_0000_0011;
+            _sut.InsertCartridge(TestRom);
+            await _sut.PowerOn(new CancellationTokenSource(1).Token, false);
 
-            _cpu.Flags = 0b0000_0111;
+            Assert.That(_sut.CPU.StepOnce().mnemonic, Is.EqualTo("NOP"));
+            Assert.That(_sut.CPU.StepOnce().mnemonic, Is.EqualTo("JP"));
+            Assert.That(_sut.CPU.StepOnce().mnemonic, Is.EqualTo("LD"));
+        }
 
-            Assert.That(_cpu.AF, Is.EqualTo(0b0000_0111_0000_0011));
-            Assert.That(_cpu.Flags, Is.EqualTo(0b0000_0111));
+        [Test]
+        //[Ignore("To be run manually")]
+        public async Task PowerOn_ExploratoryTestForDebugOutput()
+        {
+            _sut.InsertCartridge(TestRom);
+            await _sut.PowerOn(new CancellationTokenSource(1000 * 10).Token);
         }
     }
 }
