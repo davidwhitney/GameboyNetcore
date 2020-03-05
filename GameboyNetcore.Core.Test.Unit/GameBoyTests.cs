@@ -80,7 +80,7 @@ namespace GameboyNetcore.Core.Test.Unit
         }
 
         [Test]
-        //[Ignore("To be run manually")]
+        [Ignore("To be run manually")]
         public async Task PowerOn_ExploratoryTestForDebugOutput()
         {
             _sut.InsertCartridge(TestRom);
