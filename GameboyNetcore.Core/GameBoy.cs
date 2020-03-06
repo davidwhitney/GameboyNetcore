@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GameboyNetcore.Core.Actions;
+using GameboyNetcore.Core.CPU;
 
 namespace GameboyNetcore.Core
 {

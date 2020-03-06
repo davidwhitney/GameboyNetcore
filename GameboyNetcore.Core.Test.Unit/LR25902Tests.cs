@@ -1,4 +1,5 @@
 using System.Linq;
+using GameboyNetcore.Core.CPU;
 using NUnit.Framework;
 
 namespace GameboyNetcore.Core.Test.Unit
