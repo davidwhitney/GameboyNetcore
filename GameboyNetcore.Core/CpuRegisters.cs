@@ -50,6 +50,9 @@ namespace GameboyNetcore.Core
             set => AF = AF.SetLowerBits(value);
         }
 
+        public int Cycles { get; set; }
+        public bool Halted { get; set; }
+
         private readonly Dictionary<string, PropertyInfo> _props;
        
         public CpuRegisters()

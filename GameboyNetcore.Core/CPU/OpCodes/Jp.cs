@@ -1,8 +1,8 @@
 ﻿namespace GameboyNetcore.Core.CPU.OpCodes
 {
-    public class Jp : OpCodeHandlerBase
+    public class JP : OpCodeHandlerBase
     {
-        public Jp()
+        public JP()
             : base(0xc3)
         {
         }

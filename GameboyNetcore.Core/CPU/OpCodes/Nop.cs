@@ -1,8 +1,8 @@
 ﻿namespace GameboyNetcore.Core.CPU.OpCodes
 {
-    public class Nop : OpCodeHandlerBase
+    public class NOP : OpCodeHandlerBase
     {
-        public Nop() : base(0x00)
+        public NOP() : base(0x00)
         {
         }
 
